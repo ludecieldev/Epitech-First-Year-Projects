@@ -1,0 +1,55 @@
+#!/usr/bin/env python3
+
+import sys
+
+
+def parse_polynomial(poly_str):
+    try:
+        return [float(coef) for coef in poly_str.split('*')]
+    except ValueError:
+        sys.exit(84)
+
+
+def evaluate_polynomial(poly, x):
+    result = 0.0
+    for coef in reversed(poly):
+        result = result * x + coef
+    return result
+
+
+def main(args):
+    if '-h' in args or len(args) == 0 or len(args) % 2 != 0:
+        print("USAGE")
+        print("\t./107transfer [num den]+")
+        print("DESCRIPTION")
+        print("\tnum\tpolynomial numerator defined by its coefficients")
+        print("\tden\tpolynomial denominator defined by its coefficients")
+        sys.exit(84)
+
+    components = []
+    try:
+        for i in range(0, len(args), 2):
+            num = parse_polynomial(args[i])
+            den = parse_polynomial(args[i + 1])
+            if not num or not den:  # Check if any list is empty after parsing
+                raise ValueError
+            components.append((num, den))
+    except (ValueError, IndexError):
+        sys.exit(84)
+
+    for i in range(1001):
+        x = i / 1000
+        response = 1.0
+        for (num, den) in components:
+            try:
+                response *= evaluate_polynomial(num, x) / evaluate_polynomial(den, x)
+            except ZeroDivisionError:
+                sys.exit(84)
+        print(f"{x:.3f} -> {response:.5f}")
+
+
+if __name__ == '__main__':
+    try:
+        main(sys.argv[1:])
+    except Exception:
+        sys.exit(84)

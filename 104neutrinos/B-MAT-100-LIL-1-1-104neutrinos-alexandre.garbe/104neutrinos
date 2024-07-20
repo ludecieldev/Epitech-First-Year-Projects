@@ -1,0 +1,80 @@
+#!/usr/bin/env python3
+
+import math
+import sys
+
+
+def update_statistics(n, mean, harmonic_mean, std_dev, new_value):
+    n += 1
+    new_mean = (mean * (n - 1) + new_value) / n
+    new_harmonic_mean = n / ((n - 1) / harmonic_mean + 1 / new_value)
+    variance = (std_dev ** 2 * (n - 1) + (new_value - mean) * (new_value - new_mean)) / n
+    new_std_dev = math.sqrt(variance)
+    rms = math.sqrt(new_mean ** 2 + new_std_dev ** 2)
+    return n, new_mean, new_harmonic_mean, new_std_dev, rms
+
+
+def format_number(num):
+    if num == 0:
+        return f"{num:}".rstrip('0').rstrip('.') if '.' in f"{num:}" else f"{num}"
+    else:
+        return f"{num:.2f}".rstrip('0').rstrip('.') if '.' in f"{num:.2f}" else f"{num}"
+
+
+def print_statistics(n, std_dev, mean, rms, harmonic_mean):
+    print(f"\tNumber of values: \t{format_number(n)}")
+    print(f"\tStandard deviation: \t{format_number(std_dev)}")
+    print(f"\tArithmetic mean: \t{format_number(mean)}")
+    print(f"\tRoot mean square: \t{format_number(rms)}")
+    print(f"\tHarmonic mean: \t\t{format_number(harmonic_mean)}\n")
+
+
+def print_usage():
+    print("USAGE")
+    print("\t./104neutrinos n a h sd")
+    print("\nDESCRIPTION")
+    print("\tn\tnumber of values")
+    print("\ta\tarithmetic mean")
+    print("\th\tharmonic mean")
+    print("\tsd\tstandard deviation")
+
+
+def main():
+    if len(sys.argv) > 1 and sys.argv[1] == '-h':
+        print_usage()
+        return
+
+    try:
+        n, mean, harmonic_mean, std_dev = map(float, sys.argv[1:])
+        if n <= 0 or harmonic_mean <= 0 or std_dev < 0:
+            raise ValueError
+    except (ValueError, IndexError):
+        print("Invalid initial inputs. Please enter positive numbers for n, harmonic mean, and non-negative number for standard deviation.")
+        sys.exit(84)
+
+    first_prompt = True
+
+    while True:
+        if first_prompt:
+            new_value_input = input("Enter next value: ")
+            first_prompt = False
+        else:
+            new_value_input = input("Enter next value: ")
+
+        if new_value_input == "END":
+            break
+
+        try:
+            new_value = float(new_value_input)
+            if new_value <= 0:
+                raise ValueError
+            n, mean, harmonic_mean, std_dev, rms = update_statistics(n, mean, harmonic_mean, std_dev, new_value)
+        except ValueError:
+            print("Invalid input. Please enter a positive number.")
+            continue
+
+        print_statistics(n, std_dev, mean, rms, harmonic_mean)
+
+
+if __name__ == "__main__":
+    main()

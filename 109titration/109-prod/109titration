@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+
+import sys
+import os
+from decimal import Decimal, ROUND_HALF_UP
+
+def linear_interpolation(x0, y0, x1, y1, x):
+    interpolated_value = y0 + (y1 - y0) * ((x - x0) / (x1 - x0))
+    return round(interpolated_value, 2)
+
+
+def calculate_second_derivatives(first_derivative):
+    second_derivative = []
+    for i in range(1, len(first_derivative)-1):
+        x0, d0 = first_derivative[i-1]
+        x1, d1 = first_derivative[i]
+        x2, d2 = first_derivative[i+1]
+        backward_rate = (d1 - d0) / (x1 - x0)
+        forward_rate = (d2 - d1) / (x2 - x1)
+        weighted_avg = ((x1 - x0) * forward_rate + (x2 - x1) * backward_rate) / ((x1 - x0) + (x2 - x1))
+        second_derivative.append((x1, weighted_avg))
+    return second_derivative
+
+def calculate_derivatives(data):
+    first_derivative = []
+    for i in range(1, len(data)-1):
+        x0, y0 = data[i-1]
+        x1, y1 = data[i]
+        x2, y2 = data[i+1]
+        backward_rate = (y1 - y0) / (x1 - x0)
+        forward_rate = (y2 - y1) / (x2 - x1)
+        weighted_avg = ((x1 - x0) * forward_rate + (x2 - x1) * backward_rate) / ((x1 - x0) + (x2 - x1))
+        first_derivative.append((x1, weighted_avg))
+    return first_derivative
+
+def read_data(file_path):
+    if not os.path.exists(file_path):
+        sys.exit(84)
+    try:
+        with open(file_path, 'r') as file:
+            data = [tuple(map(float, line.strip().split(';'))) for line in file]
+        if len(data) < 3:
+            sys.exit(84)
+        return data
+    except Exception:
+        sys.exit(84)
+
+def display_usage():
+    print("USAGE")
+    print("    ./109titration file")
+    print("DESCRIPTION")
+    print("    file    a csv file containing 'vol;ph' lines")
+
+def main():
+    if len(sys.argv) != 2 or sys.argv[1] == '-h':
+        display_usage()
+        sys.exit(84)
+    file_path = sys.argv[1]
+    data = read_data(file_path)
+    first_derivative = calculate_derivatives(data)
+    second_derivative = calculate_second_derivatives(first_derivative)
+    if not first_derivative or not second_derivative:
+        sys.exit(84)
+    equivalence_point = max(first_derivative, key=lambda x: x[1])[0]
+    estimated_second_derivatives = []
+    x_values = [x * 0.1 for x in range(75, 91)]
+    for x in x_values:
+        for i in range(len(second_derivative) - 1):
+            if second_derivative[i][0] <= x <= second_derivative[i + 1][0]:
+                x0, y0 = second_derivative[i]
+                x1, y1 = second_derivative[i + 1]
+                estimated_value = linear_interpolation(x0, y0, x1, y1, x)
+                estimated_second_derivatives.append((x, estimated_value))
+                break
+    try:
+        final_equivalence_point = next(x for x, y in estimated_second_derivatives if y < 0)
+    except StopIteration:
+        sys.exit(84)
+    print(f"Derivative:")
+    for vol, deriv in first_derivative:
+        print(f"{vol} ml -> {deriv:.2f}")
+    print("\nEquivalence point at {:.1f} ml".format(equivalence_point))
+    print("\nSecond derivative:")
+    for vol, deriv in second_derivative:
+        print(f"{vol} ml -> {deriv:.2f}")
+    print("\nSecond derivative estimated:")
+    for vol, deriv in estimated_second_derivatives:
+        print(f"{vol:.1f} ml -> {deriv:.2f}")
+    print(f"\nEquivalence point at {final_equivalence_point:.1f} ml")
+    sys.exit(0)
+
+if __name__ == "__main__":
+    main()

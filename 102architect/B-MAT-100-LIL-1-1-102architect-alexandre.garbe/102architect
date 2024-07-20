@@ -1,0 +1,94 @@
+#!/usr/bin/python3
+
+import sys
+import math
+
+def create_translation_matrix(i, j):
+    return [1, 0, i, 0, 1, j, 0, 0, 1]
+
+def create_scaling_matrix(m, n):
+    return [m, 0, 0, 0, n, 0, 0, 0, 1]
+
+def create_rotation_matrix(alpha):
+    cos_a = math.cos(math.radians(alpha))
+    sin_a = math.sin(math.radians(alpha))
+    return [cos_a, -sin_a, 0, sin_a, cos_a, 0, 0, 0, 1]
+
+def create_symmetry_matrix(alpha):
+    cos_a = math.cos(math.radians(2 * alpha))
+    sin_a = math.sin(math.radians(2 * alpha))
+    return [cos_a, sin_a, 0, sin_a, -cos_a, 0, 0, 0, 1]
+
+def matrix_multiply(a, b):
+    result = [0] * 9
+    for i in range(3):
+        for j in range(3):
+            result[i*3 + j] = sum(a[i*3 + k] * b[k*3 + j] for k in range(3))
+    return result
+
+def apply_transformation(matrix, trans, args):
+    try:
+        if trans == "-t":
+            print(f"Translation along vector ({int(args[0])}, {int(args[1])})")
+            return matrix_multiply(matrix, create_translation_matrix(*args))
+        elif trans == "-z":
+            print(f"Scaling by factors {int(args[0])} and {int(args[1])}")
+            return matrix_multiply(matrix, create_scaling_matrix(*args))
+        elif trans == "-r":
+            print(f"Rotation by a {int(args[0])} degree angle")
+            return matrix_multiply(matrix, create_rotation_matrix(args[0]))
+        elif trans == "-s":
+            print(f"Reflection over an axis with an inclination angle of {int(args[0])} degrees")
+            return matrix_multiply(matrix, create_symmetry_matrix(args[0]))
+    except Exception as e:
+        print(f"Error applying transformation {trans}: {e}")
+        sys.exit(84)
+
+def print_matrix(matrix):
+    for i in range(0, 9, 3):
+        print("%.2f\t%.2f\t%.2f" % (matrix[i], matrix[i+1], matrix[i+2]))
+
+def transform_point(matrix, x, y):
+    new_x = matrix[0] * x + matrix[1] * y + matrix[2]
+    new_y = matrix[3] * x + matrix[4] * y + matrix[5]
+    return new_x, new_y
+
+def main():
+    if len(sys.argv) < 4 or sys.argv[1] == "-h":
+        print_usage()
+        sys.exit(0 if sys.argv[1] == "-h" else 84)
+
+    try:
+        x, y = float(sys.argv[1]), float(sys.argv[2])
+    except ValueError:
+        print("Error: Invalid coordinates.")
+        sys.exit(84)
+
+    matrix = [1, 0, 0, 0, 1, 0, 0, 0, 1]
+    i = 3
+    while i < len(sys.argv):
+        if sys.argv[i] in ["-t", "-z", "-r", "-s"]:
+            args_count = 1 if sys.argv[i] in ["-r", "-s"] else 2
+            if i + args_count >= len(sys.argv):
+                sys.exit(84)
+            try:
+                args = [float(sys.argv[j]) for j in range(i+1, i+1+args_count)]
+            except ValueError:
+                sys.exit(84)
+            matrix = apply_transformation(matrix, sys.argv[i], args)
+            i += args_count
+        else:
+            sys.exit(84)
+        i += 1
+
+    print_matrix(matrix)
+    new_x, new_y = transform_point(matrix, x, y)
+    print(f"({x:.2f}, {y:.2f}) => ({new_x:.2f}, {new_y:.2f})")
+
+def print_usage():
+    print("USAGE\n\t./102architect x y transfo1 arg11 [arg12] [transfo2 arg12 [arg22]] ...\n")
+    print("DESCRIPTION\n\tx\tabscissa of the original point\n\ty\tordinate of the original point\n")
+    print("\ttransfo arg1 [arg2]\n\t-t i j\ttranslation along vector (i, j)\n\t-z m n\tscaling by factors m (x-axis) and n (y-axis)\n\t-r d\trotation centered in O by a d degree angle\n\t-s d\treflection over the axis passing through O with an inclination angle of d degrees\n")
+
+if __name__ == "__main__":
+    main()

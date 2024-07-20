@@ -1,0 +1,11 @@
+*.o
+settingup
+.idea/*
+.vscode/*
+files/*
+CMakeLists.txt
+intermediate_map_100_100.*
+compile_commands.json
+cmake-build-debug/*
+example_files/*
+

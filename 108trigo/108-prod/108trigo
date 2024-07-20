@@ -1,0 +1,135 @@
+#!/usr/bin/env python3
+
+import sys
+
+
+def factorial(n):
+    result = 1
+    for i in range(1, n + 1):
+        result *= i
+    return result
+
+
+def matrix_multiply(matrix1, matrix2):
+    result = [[sum(a*b for a, b in zip(X_row, Y_col)) for Y_col in zip(*matrix2)] for X_row in matrix1]
+    return result
+
+
+def matrix_add(matrix1, matrix2):
+    return [[a + b for a, b in zip(row1, row2)] for row1, row2 in zip(matrix1, matrix2)]
+
+
+def scalar_multiply(matrix, scalar):
+    return [[scalar * cell for cell in row] for row in matrix]
+
+
+def matrix_power(matrix, power):
+    result = matrix
+    for _ in range(power-1):
+        result = matrix_multiply(result, matrix)
+    return result
+
+
+def identity_matrix(size):
+    return [[1 if i == j else 0 for j in range(size)] for i in range(size)]
+
+
+def cos_matrix(matrix):
+    result = identity_matrix(len(matrix))
+    sign = -1
+    for n in range(1, 100):
+        term = matrix_power(matrix, 2*n)
+        term = scalar_multiply(term, sign / factorial(2*n))
+        result = matrix_add(result, term)
+        sign *= -1
+    return result
+
+
+def exp_matrix(matrix):
+    result = identity_matrix(len(matrix))
+    for n in range(1, 100):
+        term = matrix_power(matrix, n)
+        term = scalar_multiply(term, 1 / factorial(n))
+        result = matrix_add(result, term)
+    return result
+
+
+def sin_matrix(matrix):
+    result = [[0 for _ in range(len(matrix))] for _ in range(len(matrix))]
+    sign = 1
+    for n in range(100):
+        term = matrix_power(matrix, 2*n + 1)
+        term = scalar_multiply(term, sign / factorial(2*n + 1))
+        result = matrix_add(result, term)
+        sign *= -1
+    return result
+
+
+def cosh_matrix(matrix):
+    result = identity_matrix(len(matrix))
+    for n in range(1, 100):
+        term = matrix_power(matrix, 2*n)
+        term = scalar_multiply(term, 1 / factorial(2*n))
+        result = matrix_add(result, term)
+    return result
+
+
+def sinh_matrix(matrix):
+    result = [[0 for _ in range(len(matrix))] for _ in range(len(matrix))]
+    for n in range(100):
+        term = matrix_power(matrix, 2*n + 1)
+        term = scalar_multiply(term, 1 / factorial(2*n + 1))
+        result = matrix_add(result, term)
+    return result
+
+
+def parse_input(argv):
+    if len(argv) < 2:
+        raise ValueError("Not enough arguments.")
+    try:
+        function = argv[0].upper()
+        if function not in functions:
+            raise ValueError("Invalid function specified.")
+        matrix_size = int(len(argv[1:]) ** 0.5)
+        if matrix_size ** 2 != len(argv[1:]):
+            raise ValueError("Matrix elements do not form a square matrix.")
+        matrix = [list(map(float, argv[i:i+matrix_size])) for i in range(1, len(argv), matrix_size)]
+    except ValueError as e:
+        print(e, file=sys.stderr)
+        sys.exit(84)
+    return function, matrix
+
+
+def print_matrix(matrix):
+    for row in matrix:
+        print(" ".join(f"{num:.2f}" for num in row))
+
+
+def main(argv):
+    if '-h' in argv:
+        print("USAGE")
+        print("\t./108trigo fun a0 a1 a2 ...")
+        print("DESCRIPTION")
+        print("\tfun\tfunction to be applied, among at least “EXP”, “COS”, “SIN”, “COSH”\n\t\tand “SINH”")
+        print("\tai\tcoefficients of the matrix")
+        return
+
+    try:
+        function, matrix = parse_input(argv)
+        result = functions[function](matrix)
+        print_matrix(result)
+    except Exception as e:
+        print(f"An error occurred: {e}", file=sys.stderr)
+        sys.exit(84)
+
+
+functions = {
+    'EXP': exp_matrix,
+    'COS': cos_matrix,
+    'SIN': sin_matrix,
+    'COSH': cosh_matrix,
+    'SINH': sinh_matrix,
+}
+
+if __name__ == "__main__":
+    main(sys.argv[1:])

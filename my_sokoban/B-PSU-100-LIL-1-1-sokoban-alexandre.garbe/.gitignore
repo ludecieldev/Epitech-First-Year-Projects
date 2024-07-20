@@ -1,0 +1,9 @@
+*.o
+my_sokoban
+.vscode/*
+.idea/*
+cmake-build-debug/*
+files/*
+CMakeLists.txt
+vgcore.*
+```

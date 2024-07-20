@@ -1,0 +1,76 @@
+#!/usr/bin/env python3
+import sys
+import math
+
+def error_message():
+    sys.exit(84)
+
+def print_help():
+    print("USAGE\n\t./110borwein n\nDESCRIPTION\n\tn\tconstant defining the integral to be computed", file=sys.stdout)
+    sys.exit(0)
+
+if len(sys.argv) == 2 and sys.argv[1] == '-h':
+    print_help()
+
+if len(sys.argv) != 2:
+    error_message()
+
+try:
+    n = int(sys.argv[1])
+    if n < 0:
+        error_message()
+except ValueError:
+    error_message()
+
+UPPER_BOUND = 5000
+SUB_INTERVALS = 10000
+DX = UPPER_BOUND / SUB_INTERVALS
+PI_OVER_2 = math.pi / 2
+
+def product_term(n, x):
+    if x == 0: return 1
+    product = 1
+    for k in range(0, n + 1):
+        denominator = (2 * k + 1)
+        product *= math.sin(x / denominator) / (x / denominator)
+    return product
+
+def midpoint_rule(n):
+    total_area = 0
+    for i in range(SUB_INTERVALS):
+        mid_x = (i + 0.5) * DX
+        total_area += product_term(n, mid_x)
+    return total_area * DX
+
+def trapezoidal_rule(n):
+    total_area = (product_term(n, 0) + product_term(n, UPPER_BOUND)) / 2
+    for i in range(1, SUB_INTERVALS):
+        x = i * DX
+        total_area += product_term(n, x)
+    return total_area * DX
+
+def simpson_rule(n):
+    total_area = product_term(n, 0) + product_term(n, UPPER_BOUND)
+    for i in range(1, SUB_INTERVALS):
+        x = i * DX
+        weight = 4 if i % 2 != 0 else 2
+        total_area += weight * product_term(n, x)
+    return (DX / 3) * total_area
+
+midpoint = midpoint_rule(n)
+trapezoidal = trapezoidal_rule(n)
+simpson = simpson_rule(n)
+
+print("Midpoint:")
+print(f"I{n} = {midpoint:.10f}")
+print(f"diff = {abs(midpoint - PI_OVER_2):.10f}\n")
+
+print("Trapezoidal:")
+print(f"I{n} = {trapezoidal:.10f}")
+print(f"diff = {abs(trapezoidal - PI_OVER_2):.10f}\n")
+
+print("Simpson:")
+print(f"I{n} = {simpson:.10f}")
+print(f"diff = {abs(simpson - PI_OVER_2):.10f}")
+
+sys.exit(0)

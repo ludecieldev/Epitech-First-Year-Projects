@@ -1,0 +1,32 @@
+{
+  "name": "b-web-200-lil-2-1-epytodo-alexandre.garbe",
+  "version": "1.0.0",
+  "description": "Epytodo project great project",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js"
+  },
+  "author": "Julien MARS Alexandre GARBE",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^10.0.0",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.9.7"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/EpitechPromo2028/B-WEB-200-LIL-2-1-epytodo-alexandre.garbe.git"
+  },
+  "private": true,
+  "bugs": {
+    "url": "https://github.com/EpitechPromo2028/B-WEB-200-LIL-2-1-epytodo-alexandre.garbe/issues"
+  },
+  "homepage": "https://github.com/EpitechPromo2028/B-WEB-200-LIL-2-1-epytodo-alexandre.garbe#readme",
+  "keywords": []
+}

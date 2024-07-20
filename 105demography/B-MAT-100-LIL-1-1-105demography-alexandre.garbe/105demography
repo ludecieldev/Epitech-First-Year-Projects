@@ -1,0 +1,144 @@
+#!/usr/bin/env python3
+
+import sys
+import csv
+import math
+
+SUCCESS = 0
+ERROR = 84
+
+
+class Demography:
+    def __init__(self, country_codes):
+        self.file_name = "./105demography_data.csv"
+        self.country_codes = country_codes
+        self.country_infos = []
+        self.year_info = []
+        self.parse_file()
+
+    def parse_file(self):
+        try:
+            with open(self.file_name, 'r') as file:
+                csv_reader = csv.reader(file, delimiter=';')
+                headers = next(csv_reader)
+                self.year_info = [int(year) for year in headers[2:]]
+
+                for row in csv_reader:
+                    if row[1] in self.country_codes:  # Assuming the second column is 'Country Code'
+                        country_name = row[0]  # Assuming the first column is 'Country Name'
+                        values = [float(value) if value else 0 for value in row[2:]]  # Convert values to float
+                        self.country_infos.append({
+                            'country_name': country_name,
+                            'id': row[1],
+                            'values': values
+                        })
+        except Exception as e:
+            raise Exception(f"Error parsing file: {e}")
+
+    def display_country(self):
+        countries = [info['country_name'] for info in self.country_infos]
+        print("Country: " + ", ".join(countries))
+
+
+    def linear_regression(self, x, y):
+        n = len(x)
+        sum_x = sum(x)
+        sum_y = sum(y)
+        sum_x2 = sum(xi ** 2 for xi in x)
+        sum_xy = sum(xi * yi for xi, yi in zip(x, y))
+
+        slope = (n * sum_xy - sum_x * sum_y) / (n * sum_x2 - sum_x ** 2)
+        intercept = (sum_y - slope * sum_x) / n
+
+        return slope, intercept
+
+    def rms(self, x, y, slope, intercept):
+        predicted = [slope * xi + intercept for xi in x]
+        mean_squared_error = sum((yi - pi) ** 2 for yi, pi in zip(y, predicted)) / len(y)
+        return math.sqrt(mean_squared_error)
+
+    def fit(self, x, y):
+        slope, intercept = self.linear_regression(x, y)
+        rms_error = self.rms(x, y, slope, intercept)
+        return slope, intercept, rms_error
+
+    def compute_rms(self, slope, intercept, first=True):
+        values = [sum(info['values'][i] for info in self.country_infos) for i in range(len(self.year_info))]
+        diff = 0
+
+        for i, year in enumerate(self.year_info):
+            if first:
+                predicted = slope * year + intercept
+            else:
+                predicted = (-intercept + year) / slope
+            diff += (values[i] - predicted) ** 2
+
+        rms = math.sqrt(diff / len(self.year_info))
+        return rms
+
+    def first_fit(self):
+        x = self.year_info
+        y = [sum(info['values'][i] for info in self.country_infos) for i in range(len(x))]
+        slope, intercept = self.linear_regression(x, y)
+        rms_error = self.compute_rms(slope, intercept)
+        population_2050 = slope * 2050 + intercept
+        print(f"Fit1\n  Y = {slope / 1e6:.2f} X - {abs(intercept) / 1e6:.2f}\n"
+              f"    Root-mean-square deviation: {rms_error / 1e6:.2f}\n"
+              f"    Population in 2050: {population_2050 / 1e6:.2f}")
+
+    def second_fit(self):
+        x = self.year_info
+        y = [sum(info['values'][i] for info in self.country_infos) for i in range(len(x))]
+        slope, intercept = self.linear_regression(y, x)
+        rms_error = self.compute_rms(slope, intercept, first=False)
+        year_2050 = ((2050 - intercept) / slope) / 1e6
+        print(f"Fit2\n  X = {slope * 1e6:.2f} Y + {intercept:.2f}\n"
+              f"    Root-mean-square deviation: {rms_error / 1e6:.2f}\n"
+              f"    Population in 2050: {year_2050:.2f}")
+
+    def correlation(self, x, y):
+        n = len(x)
+        sum_x = sum(x)
+        sum_y = sum(y)
+        sum_x2 = sum(xi ** 2 for xi in x)
+        sum_y2 = sum(yi ** 2 for yi in y)
+        sum_xy = sum(xi * yi for xi, yi in zip(x, y))
+
+        correlation_coefficient = (n * sum_xy - sum_x * sum_y) / math.sqrt((n * sum_x2 - sum_x ** 2) * (n * sum_y2 - sum_y ** 2))
+        return correlation_coefficient
+
+    def compute_correlation(self):
+        x = self.year_info
+        y = [sum(info['values'][i] for info in self.country_infos) for i in range(len(x))]
+        r = self.correlation(x, y)
+        print(f"Correlation: {r:.4f}")
+
+
+def display_help(prog):
+    print("USAGE")
+    print(f"    {prog} [code]+")
+    print("\nDESCRIPTION")
+    print("    code    country code")
+    return SUCCESS
+
+
+def start(ac, av):
+    if ac == 2 and av[1] == "-h":
+        return display_help(av[0])
+    elif ac < 2:
+        print("Error: too few arguments", file=sys.stderr)
+        return ERROR
+
+    try:
+        demo = Demography(av[1:])
+        demo.display_country()
+        demo.first_fit()
+        demo.second_fit()
+        demo.compute_correlation()
+    except Exception as e:
+        print(f"Error: {e}", file=sys.stderr)
+        return ERROR
+
+
+if __name__ == "__main__":
+    sys.exit(start(len(sys.argv), sys.argv))

@@ -1,0 +1,197 @@
+[
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_a.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_a.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_l.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_l.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_d.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_d.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_t.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_t.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_identifier.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_identifier.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_r_maj.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_r_maj.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/flags/flag_r_min.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/flags/flag_r_min.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/main/my_ls.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/main/my_ls.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/main/main.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/main/main.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "lib/my/my_putchar.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/lib/my/my_putchar.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "lib/my/my_put_nbr.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/lib/my/my_put_nbr.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "lib/my/my_putstr.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/lib/my/my_putstr.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "lib/my/mini_printf.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/lib/my/mini_printf.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "lib/my/my_strlen.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/lib/my/my_strlen.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  },
+  {
+    "arguments": [
+      "/usr/bin/gcc",
+      "-c",
+      "-g3",
+      "-o",
+      "my_ls",
+      "src/main/errorcase.c"
+    ],
+    "directory": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe",
+    "file": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/src/main/errorcase.c",
+    "output": "/home/ludecie/WORKSPACE/Tek1/my_ls/B-PSU-100-LIL-1-1-myls-alexandre.garbe/my_ls"
+  }
+]

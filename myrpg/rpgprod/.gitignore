@@ -1,0 +1,7 @@
+html/
+.vscode/
+*.o
+*.d
+myrpg
+my_rpg
+latex/

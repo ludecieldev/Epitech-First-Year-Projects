@@ -1,0 +1,7 @@
+my_ls
+*.o
+vgcore.*
+testfile/*
+.idea/*
+.vscode/*
+```

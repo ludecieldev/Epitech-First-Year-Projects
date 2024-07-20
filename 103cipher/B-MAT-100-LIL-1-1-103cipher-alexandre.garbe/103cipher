@@ -1,0 +1,139 @@
+#!/usr/bin/env python3
+
+import sys
+import math
+from fractions import Fraction
+
+def aff_key(key, nb, argv):
+    i = j = k = 0
+    while i < nb:
+        key.append([])
+        while j < nb and k < len(argv[2]):
+            key[i].append(ord(argv[2][k]))
+            j += 1
+            k += 1
+        i += 1
+        j = 0
+    while len(key[i - 2]) < nb:
+        key[i - 2].append(0)
+    while len(key[i - 1]) < nb:
+        key[i - 1].append(0)
+    return key
+
+def sym_key(key, nb):
+    stock = key[0][1]
+    key[0][1] = key[1][0]
+    key[1][0] = stock
+    stock = key[0][2]
+    key[0][2] = key[2][0]
+    key[2][0] = stock
+    stock = key[1][2]
+    key[1][2] = key[2][1]
+    key[2][1] = stock
+    return key
+
+def fois_key_inv(key, nb, i, j, det):
+    if i == 0:
+        i_1, i_2 = 1, 2
+    elif i == 1:
+        i_1, i_2 = 0, 2
+    else:
+        i_1, i_2 = 0, 1
+
+    if j == 0:
+        j_1, j_2 = 1, 2
+    elif j == 1:
+        j_1, j_2 = 0, 2
+    else:
+        j_1, j_2 = 0, 1
+
+    result = Fraction(1, det) * (key[i_1][j_1] * key[i_2][j_2] - key[i_2][j_1] * key[i_1][j_2])
+    fois = -1 if (i == 0 and j == 1) or (i == 1 and j == 0) or (i == 2 and j == 1) or (i == 1 and j == 2) else 1
+    return result * fois if result != 0 else float(0)
+
+def key_inv_3x3(key, nb):
+    det = (key[0][0] * (key[1][1] * key[2][2] - key[2][1] * key[1][2]) -
+           key[0][1] * (key[1][0] * key[2][2] - key[2][0] * key[1][2]) +
+           key[0][2] * (key[1][0] * key[2][1] - key[2][0] * key[1][1]))
+    key_int = []
+    i = j = 0
+    key = sym_key(key, nb)
+    while i < nb:
+        key_int.append([])
+        while j < nb:
+            key_int[i].append(fois_key_inv(key, nb, i, j, det))
+            j += 1
+        i += 1
+        j = 0
+    return key_int
+
+def aff_ph(ph, nb, nbr, argv):
+    i = j = k = 0
+    while i < nbr:
+        if len(ph) != nbr:
+            ph.append([])
+        while j < nb and k < len(argv[1]):
+            ph[i].append(ord(argv[1][k]))
+            j += 1
+            k += 1
+        i += 1
+        j = 0
+    while len(ph[i - 1]) < nb:
+        ph[i - 1].append(0)
+    return ph
+
+def aff_res(res, nb, nbr, key, ph):
+    stock = 0.0
+    i = j = k = 0
+    while i < nbr:
+        while j < nb:
+            while k < nb:
+                stock += float(key[k][j]) * float(ph[i][k])
+                k += 1
+            res.append(stock)
+            stock = 0.0
+            k = 0
+            j += 1
+        i += 1
+        j = 0
+    return res
+
+# Error Handling
+if len(sys.argv) != 4:
+    exit(84)
+
+mod = int(sys.argv[3])
+if mod not in [0, 1]:
+    exit(84)
+
+# Variable Declarations
+key = []
+ph = []
+res = []
+
+nb = int(math.sqrt(len(sys.argv[2]))) + (1 if float(math.sqrt(len(sys.argv[2]))) % 1 != 0 else 0)
+if nb == 0:
+    exit(84)
+
+nbr = int(len(sys.argv[1]) / nb) + (1 if (float(len(sys.argv[1])) / nb) % 1 != 0 else 0)
+
+# Main Variable Assignment
+key = aff_key(key, nb, sys.argv)
+if mod == 0:
+    ph = aff_ph(ph, nb, nbr, sys.argv)
+else:
+    ph = aff_ph(ph, nb, nbr, sys.argv)
+    key = key_inv_3x3(key, nb)
+
+res = aff_res(res, nb, nbr, key, ph)
+
+# Display
+print("Key matrix:")
+for i in range(nb):
+    print(' '.join(f"{float(key[i][j]):.3f}" if mod == 1 else str(key[i][j]) for j in range(nb)))
+
+print("\nEncrypted message:" if mod == 0 else "\nDecrypted message:")
+if mod == 0:
+    print(' '.join(str(int(i)) for i in res))
+else:
+    print(''.join(chr(int(round(num))) for num in res if int(round(num)) != 0))
